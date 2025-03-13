@@ -11,7 +11,7 @@ const httpServer = createServer(server);
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.NODE_ENV === "production" 
-        ? "https://youth-adults.vercel.app/"
+        ? "https://youth-adults.vercel.app"
         : "http://localhost:3000", 
       methods: ["GET", "POST"]
   }
