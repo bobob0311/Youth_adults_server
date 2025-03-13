@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
+    "target": "ES6",
     "module": "CommonJS",
-    "target": "ES2017",
-    "moduleResolution": "node",
+     "outDir": "./dist",        
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "strict": true
   },
-  "include": ["server.ts"]
+  "include": ["server.ts"],     
+  "exclude": ["node_modules"]
 }
