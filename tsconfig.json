@@ -5,6 +5,7 @@
     "outDir": "./dist",        
     "esModuleInterop": true,
     "strict": true,
+    "moduleResolution": "node",
     "noImplicitAny": false
   },
   "include": ["server.ts"],     
