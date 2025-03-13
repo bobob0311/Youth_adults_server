@@ -2,9 +2,10 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
-     "outDir": "./dist",        
+    "outDir": "./dist",        
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "noImplicitAny": false
   },
   "include": ["server.ts"],     
   "exclude": ["node_modules"]
