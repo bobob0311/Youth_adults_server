@@ -2,6 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import aligoapi from "aligoapi";
+import cors from 'cors'; 
 
 const maxCapacity = 2;
 const PORT = process.env.PORT || 4000;
@@ -59,6 +60,12 @@ io.on("connection", (socket) => {
 httpServer.listen(PORT, () => {
   console.log(`Socket.IO 서버 ${PORT}번 포트에서 실행 중`);
 });
+server.use(cors({
+  origin: process.env.NODE_ENV === "production"
+    ? "https://youth-adults.vercel.app" 
+    : "http://localhost:3000",           
+  methods: ["GET", "POST"],
+}));
 
 server.use(express.json());
 
@@ -69,6 +76,7 @@ const AuthData = {
 };
 
 server.post("/sendMessage", async (req, res) => {
+  console.log("여기까지도 왔습니다.")
   try {
     const { message_title, message, phoneNumber, message_type } = req.body;
 
