@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("uploadComplete", (roomId, myId, chatData) => {
-    socket.to(roomId).except(myId).emit("getData", chatData);
+    socket.to(roomId).except(myId).emit("getPrevChatData", chatData);
   });
 
   socket.on("message", (msg, myId, roomId) => {
@@ -61,7 +61,7 @@ httpServer.listen(PORT, () => {
   console.log(`Socket.IO 서버 ${PORT}번 포트에서 실행 중`);
 });
 server.use(cors({
-  origin: process.env.NODE_ENV === "production"
+  origin: (process.env.NODE_ENV || "development") === "production"
     ? "https://youth-adults.vercel.app" 
     : "http://localhost:3000",           
   methods: ["GET", "POST"],
