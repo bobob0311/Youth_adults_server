@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import aligoapi from "aligoapi";
 import cors from 'cors'; 
+import "dotenv/config";
 
 const maxCapacity = 2;
 const PORT = process.env.PORT || 4000;
@@ -12,9 +13,7 @@ const httpServer = createServer(server);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.NODE_ENV === "production" 
-        ? "https://youth-adults.vercel.app"
-        : "http://localhost:3000", 
+    origin: "http://localhost:3000", 
       methods: ["GET", "POST"]
   }
 });
@@ -48,8 +47,8 @@ io.on("connection", (socket) => {
     console.log("클라이언트 연결 종료:", socket.id);
   });
 
-  socket.on("sendFromSystem", (message, roomId) => {
-    io.to(roomId).emit("sendFromSystem", message);
+  socket.on("sendBySystem", (message, roomId) => {
+    io.to(roomId).emit("sendBySystem", message);
   });
 
   socket.on("img", (imgFile, myId, roomId) => {
@@ -60,6 +59,8 @@ io.on("connection", (socket) => {
 httpServer.listen(PORT, () => {
   console.log(`Socket.IO 서버 ${PORT}번 포트에서 실행 중`);
 });
+
+
 server.use(cors({
   origin: (process.env.NODE_ENV || "development") === "production"
     ? "https://youth-adults.vercel.app" 
@@ -75,19 +76,21 @@ const AuthData = {
     testmode_yn: "Y",
 };
 
+const SENDER = process.env.SENDER_PHONE_NUMBER;
+
 server.post("/sendMessage", async (req, res) => {
   console.log("여기까지도 왔습니다.")
   try {
     const { message_title, message, phoneNumber, message_type } = req.body;
 
     console.log("Received Data:", { message_title, message, phoneNumber, message_type });
-
+    console.log(SENDER)
     const requestData = {
       headers: {
         "content-type": "application/json",
       },
       body: {
-        sender: process.env.SENDER_PHONE_NUMBER,
+        sender: SENDER,
         receiver: phoneNumber,
         msg: message,
         msg_type: message_type,
