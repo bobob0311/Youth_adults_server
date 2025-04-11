@@ -13,7 +13,7 @@ const httpServer = createServer(server);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000", 
+    origin: process.env.BASE_URL, 
       methods: ["GET", "POST"]
   }
 });
@@ -62,9 +62,7 @@ httpServer.listen(PORT, () => {
 
 
 server.use(cors({
-  origin: (process.env.NODE_ENV || "development") === "production"
-    ? "https://youth-adults.vercel.app" 
-    : "http://localhost:3000",           
+  origin: process.env.BASE_URL,           
   methods: ["GET", "POST"],
 }));
 
