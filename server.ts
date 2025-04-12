@@ -49,6 +49,7 @@ io.on("connection", (socket) => {
 
   socket.on("sendBySystem", (message, roomId) => {
     io.to(roomId).emit("sendBySystem", message);
+    console.log(`시스템 메시지${message}`);
   });
 
   socket.on("img", (imgFile, myId, roomId) => {
