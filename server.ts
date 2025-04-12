@@ -69,20 +69,20 @@ server.use(cors({
 server.use(express.json());
 
 const AuthData = {
-    key: process.env.ALIGO_API_KEY,
-    user_id: process.env.ALIGO_USER_ID,
-    testmode_yn: "Y",
+  key: process.env.ALIGO_API_KEY,
+  user_id: process.env.ALIGO_USER_ID,
+  testmode_yn: "Y",
 };
 
 const SENDER = process.env.SENDER_PHONE_NUMBER;
 
 server.post("/sendMessage", async (req, res) => {
-  console.log("여기까지도 왔습니다.")
+  console.log("여기까지도 왔습니다.");
   try {
     const { message_title, message, phoneNumber, message_type } = req.body;
-
     console.log("Received Data:", { message_title, message, phoneNumber, message_type });
-    console.log(SENDER)
+    console.log("SENDER:", SENDER);
+
     const requestData = {
       headers: {
         "content-type": "application/json",
@@ -99,7 +99,7 @@ server.post("/sendMessage", async (req, res) => {
     console.log("Request Object:", requestData);
 
     const response = await aligoapi.send(requestData, AuthData);
-    console.log("Response:", response);
+    console.log("Aligo API Response:", response);
 
     res.status(200).json(response);
   } catch (e) {
