@@ -55,6 +55,11 @@ io.on("connection", (socket) => {
   socket.on("img", (imgFile, myId, roomId) => {
     io.to(roomId).emit("img", imgFile, myId);
   });
+
+  socket.on("alertLeaveRoom", (roomId, name) => {
+    console.log(name);
+    io.to(roomId).emit("alertLeaveRoom",name);
+  })
 });
 
 httpServer.listen(PORT, () => {
