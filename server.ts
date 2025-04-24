@@ -35,12 +35,28 @@ io.on("connection", (socket) => {
   });
 
   socket.on("uploadComplete", (roomId, myId, chatData) => {
-    socket.to(roomId).except(myId).emit("getPrevChatData", chatData);
+    socket.to(roomId).except(socket.id).emit("getPrevChatData", chatData);
   });
 
-  socket.on("message", (msg, myId, roomId) => {
-    console.log("메시지 수신:", msg);
-    io.to(roomId).emit("message", msg, myId);
+  socket.on("message", (msg, myId, roomId,tempId, callback) => {
+    try {
+      io.to(roomId).except(socket.id).emit("message", msg, myId);
+
+      callback?.({ success: true, tempId });
+    } catch (e) {
+      console.error("메시지 전송 중 에러발생:", e);
+      callback?.({ success: false, tempId });
+    }
+  });
+
+  socket.on("img", (imgFile, myId, roomId,tempId, callback) => {
+    try {
+      io.to(roomId).except(socket.id).emit("img", imgFile, myId);
+      callback?.({ success: true, tempId });
+    } catch (e) {
+      console.error("사진 전송 중 에러발생:", e);
+      callback?.({ success: false, tempId });
+    }
   });
 
   socket.on("disconnect", () => {
@@ -52,9 +68,7 @@ io.on("connection", (socket) => {
     console.log(`시스템 메시지${message}`);
   });
 
-  socket.on("img", (imgFile, myId, roomId) => {
-    io.to(roomId).emit("img", imgFile, myId);
-  });
+
 
   socket.on("alertLeaveRoom", (roomId, name) => {
     console.log(name);
