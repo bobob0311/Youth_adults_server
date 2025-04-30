@@ -91,7 +91,7 @@ server.use(express.json());
 const AuthData = {
   key: process.env.ALIGO_API_KEY,
   user_id: process.env.ALIGO_USER_ID,
-  testmode_yn: "Y",
+  testmode_yn: process.env.TEST_MODE,
 };
 
 const SENDER = process.env.SENDER_PHONE_NUMBER;
